@@ -23,7 +23,7 @@ class LoginTypeIconWidget extends StatelessWidget {
       },
       child: Column(
         children: [
-          Text(title),
+          Text(title,style: TextStyle(fontSize: 24),),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Image.asset(

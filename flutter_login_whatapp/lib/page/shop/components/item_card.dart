@@ -5,17 +5,19 @@ import '../../../theme/app_colors.dart';
 
 class ItemCard extends StatelessWidget {
   final Product product;
-  final Function press;
+  final VoidCallback onTap;
   const ItemCard({
     Key? key,
     required this.product,
-    required this.press,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: press(),
+      onTap:() {
+        onTap();
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

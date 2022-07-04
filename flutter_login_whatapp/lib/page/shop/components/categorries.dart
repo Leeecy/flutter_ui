@@ -5,14 +5,18 @@ import '../../../theme/app_colors.dart';
 // We need satefull widget for our categories
 
 class Categories extends StatefulWidget {
+  final Function(int) onClick;
+
+  const Categories({super.key, required this.onClick});
   @override
   _CategoriesState createState() => _CategoriesState();
 }
 
-class _CategoriesState extends State<Categories> {
+class _CategoriesState extends State<Categories>{
   List<String> categories = ["Hand bag", "Jewellery", "Footwear", "Dresses"];
   // By default our first item will be selected
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,6 +24,7 @@ class _CategoriesState extends State<Categories> {
       child: SizedBox(
         height: 25,
         child: ListView.builder(
+          shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
           itemBuilder: (context, index) => buildCategory(index),
@@ -31,6 +36,7 @@ class _CategoriesState extends State<Categories> {
   Widget buildCategory(int index) {
     return GestureDetector(
       onTap: () {
+        widget.onClick(index);
         setState(() {
           selectedIndex = index;
         });

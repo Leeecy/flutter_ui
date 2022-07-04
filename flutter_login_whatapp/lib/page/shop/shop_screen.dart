@@ -11,7 +11,7 @@ class ShopPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: const Body(),
+      body: Body(),
     );
   }
 }

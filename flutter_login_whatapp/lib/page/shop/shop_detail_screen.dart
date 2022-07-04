@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../models/shop/product.dart';
 import '../../theme/app_colors.dart';
+import 'components/body.dart';
+import 'components/detailBody.dart';
 
 class ShopDetailsScreen extends StatelessWidget {
   final Product product;
@@ -13,8 +15,8 @@ class ShopDetailsScreen extends StatelessWidget {
     return Scaffold(
       // each product have a color
       backgroundColor: product.color,
-      // appBar: buildAppBar(context),
-      // body: Body(product: product),
+      appBar: buildAppBar(context),
+      body: DetailBody(product: product),
     );
   }
 
