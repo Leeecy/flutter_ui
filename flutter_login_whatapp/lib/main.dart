@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_login_whatapp/page/weather/weather_screen.dart';
 import 'package:flutter_login_whatapp/page/whatsapp_home.dart';
 import 'package:flutter_login_whatapp/widgets/welcome_widget.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'page/login_page.dart';
 import 'page/pokemon/pokemon_screen.dart';
 import 'page/shop/shop_screen.dart';
@@ -9,13 +13,14 @@ import 'theme/app_colors.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    getPermission();
     return MaterialApp(
       title: 'Flutter what\'app',
       theme: ThemeData(
@@ -25,6 +30,17 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+Future<void> getPermission() async{
+  if (Platform.isAndroid) {
+    // Permission.locationWhenInUse.request();
+    if(await Permission.locationWhenInUse.request().isGranted){
+      Permission.camera.request();
+
+    }
+  }
+}
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -99,15 +115,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 54),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Spacer(),
               LineWidget(),
               LoginTypeIconWidget(
                 icon: 'assets/icons/logo_ins.png',
                 title: 'shop',
                 click: () {
-                  print('object');
-
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
                       return ShopPage();
@@ -117,8 +131,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               LoginTypeIconWidget(
                 icon: 'assets/icons/logo_fb.png',
-                title: '456',
-                click: () {},
+                title: 'weather',
+                click: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return WeatherPage();
+                    },
+                  ));
+                },
               ),
               LoginTypeIconWidget(
                 icon: 'assets/icons/logo_twitter.png',
@@ -126,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 click: () {},
               ),
               LineWidget(),
-              Spacer(),
+              // Spacer(),
             ],
           )
         ],

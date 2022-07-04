@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../models/shop/product.dart';
+import '../../provider/provider_manager.dart';
 import '../../theme/app_colors.dart';
 import 'components/body.dart';
 import 'components/detailBody.dart';
@@ -36,9 +38,26 @@ class ShopDetailsScreen extends StatelessWidget {
           icon: SvgPicture.asset("assets/icons/search.svg"),
           onPressed: () {},
         ),
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/cart.svg"),
-          onPressed: () {},
+        Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            final count = ref.watch(counterController);
+            return Center(
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Positioned(
+                      top:0,
+                      // left: 20,
+                      child: Text('$count',style: TextStyle(color: Colors.red,fontSize: 16),)),
+                  IconButton(
+                    icon: SvgPicture.asset("assets/icons/cart.svg"),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            );
+          },
+
         ),
         SizedBox(width: kDefaultPaddin / 2)
       ],

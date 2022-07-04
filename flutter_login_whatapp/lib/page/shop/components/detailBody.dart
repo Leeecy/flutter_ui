@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_whatapp/page/shop/components/product_title_with_image.dart';
+import 'package:flutter_login_whatapp/provider/provider_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/shop/product.dart';
 import '../../../theme/app_colors.dart';
 import 'add_to_cart.dart';
@@ -17,48 +19,56 @@ class _DetailBodyState extends State<DetailBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: size.height,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.3),
-                  padding: EdgeInsets.only(
-                    top: size.height * 0.12,
-                    left: kDefaultPaddin,
-                    right: kDefaultPaddin,
-                  ),
-                  // height: 500,
-                  decoration:const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final totalNum = ref.watch(totalController);
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: size.height,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: size.height * 0.3),
+                      padding: EdgeInsets.only(
+                        top: size.height * 0.12,
+                        left: kDefaultPaddin,
+                        right: kDefaultPaddin,
+                      ),
+                      // height: 500,
+                      decoration:const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
+                        ),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          ColorAndSize(product: widget.product),
+                          SizedBox(height: kDefaultPaddin / 2),
+                          Description(product: widget.product,),
+                          SizedBox(height: kDefaultPaddin / 2),
+                          CounterWithFavBtn(totalNums: totalNum, addCall: () {
+                            ref.read(counterController.notifier).add();
+                          }, sunCall: () {
+                            ref.read(counterController.notifier).subtract();
+                          },),
+                          SizedBox(height: kDefaultPaddin / 2),
+                          AddToCart(product: widget.product),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      ColorAndSize(product: widget.product),
-                      SizedBox(height: kDefaultPaddin / 2),
-                      Description(product: widget.product,),
-                      SizedBox(height: kDefaultPaddin / 2),
-                      CounterWithFavBtn(),
-                      SizedBox(height: kDefaultPaddin / 2),
-                      AddToCart(product: widget.product),
-                    ],
-                  ),
-                ),
 
-                ProductTitleWithImage(product: widget.product),
-              ],
-            ),
+                    ProductTitleWithImage(product: widget.product),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

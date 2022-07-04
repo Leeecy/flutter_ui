@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -11,10 +12,9 @@ class PokemonPage extends StatefulWidget {
 }
 
 class _PokemonPageState extends State<PokemonPage> {
-  PokeHub? pokeHub;
+  PokeHub? pokeMan;
   String url =
       "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json";
-
   @override
   void initState() {
     super.initState();
@@ -27,13 +27,13 @@ class _PokemonPageState extends State<PokemonPage> {
     return Scaffold(
         appBar: AppBar(title: Text('Pokemon')),
         backgroundColor: Colors.cyan,
-        body: pokeHub == null
+        body: pokeMan == null
             ? Center(
                 child: CircularProgressIndicator(),
               )
             : GridView.count(
                 crossAxisCount: 2,
-                children: pokeHub!.pokemon!
+                children: pokeMan!.pokemon!
                     .map(
                       (poke) => Card(
                         child: Column(
@@ -64,10 +64,15 @@ class _PokemonPageState extends State<PokemonPage> {
   }
 
   void fetchData() async {
-    var res = await http.get(Uri.parse(url));
-    var decodedJson = jsonDecode(res.body);
-    pokeHub = PokeHub.fromJson(decodedJson);
-    debugPrint(pokeHub.toString());
-    setState(() {});
+    debugPrint('old');
+    Dio dio = Dio(BaseOptions(responseType: ResponseType.plain));
+    final res = await dio.get(url);
+    if (res.statusCode == 200){
+      PokeHub pokeHub = PokeHub.fromJson(json.decode(res.data));
+      setState(() {
+        pokeMan = pokeHub;
+      });
+    }
+
   }
 }

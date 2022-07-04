@@ -47,7 +47,7 @@ class LineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80,
+      width: 60,
       child: Divider(color: kTextColor),
     );
   }
@@ -87,10 +87,10 @@ class WelcomeHeaderWidget extends StatelessWidget {
       children: [
         Image.asset(
           'assets/images/bg_welcome_header.png',
-          height: 500,
+          height: 400,
         ),
         Positioned(
-          top: 194,
+          top: 144,
           left: 40,
           child: Column(
             children: [
